@@ -36,7 +36,6 @@ export default function Hero() {
 
         {/* Location */}
         <p style={{ color: 'var(--ink-muted)', fontSize: '0.9rem', marginBottom: '2rem' }}>
-          📍 Vancouver, BC &nbsp;·&nbsp; Saskatoon, SK
         </p>
 
         {/* Intro */}
@@ -51,7 +50,7 @@ export default function Hero() {
         >
           I&apos;m a Software Developer who enjoys building things that are fast, thoughtful, and
           actually useful. I&apos;ve worked across the stack, from React frontends to Python and Node.js
-          backends to AWS deployments — and I care a lot about the details.
+          backends to AWS deployments. I care a lot about the results and details.
         </p>
 
         {/* Fun fact */}
