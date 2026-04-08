@@ -27,10 +27,10 @@ export default function Hero() {
         >
           Software Developer &nbsp;·&nbsp;
           <a
-            href="mailto:rj.andal.cs@gmail.com"
+            href="mailto:rjandal248@gmail.com"
             style={{ fontWeight: 400, fontSize: '1rem', color: 'var(--ink-muted)', letterSpacing: 'normal' }}
           >
-            rj.andal.cs@gmail.com
+            rjandal248@gmail.com
           </a>
         </p>
 
