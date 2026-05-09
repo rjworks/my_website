@@ -1,0 +1,5 @@
+{
+  "code": "import urllib.request\nimport json\n\nurl = 'http://localhost:3000/api/hello'\ndata = json.dumps({\n    'code': 'const x = 42;',\n    'language': 'typescript',\n    'filename': 'index.ts'\n}).encode()\n\nreq   = urllib.request.Request(url, data=data, headers={\n    'Content-Type': 'application/json',\n    'Authorization': 'Bearer your-secret'\n}, method='POST')\n\ntry:\n    with urllib.request.urlopen(req) as res:\n          print(res.read().decode())\nexcept Exception as e:\n    print('Error:', e)ffffzzzzzzzzzzzzf",
+  "language": "python",
+  "filename": "hello.py"
+}
