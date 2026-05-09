@@ -12,14 +12,17 @@ export default function HelloViewer({ initial }: { initial: Content }) {
   const [code, setCode] = useState(initial.code)
 
   useEffect(() => {
-    const es = new EventSource('/api/hello/events')
-    es.onmessage = (e) => {
+    const poll = async () => {
       try {
-        const data: Content = JSON.parse(e.data)
+        const res = await fetch('/api/hello')
+        const data: Content = await res.json()
         setCode(data.code)
       } catch {}
     }
-    return () => es.close()
+
+    poll()
+    const interval = setInterval(poll, 2000)
+    return () => clearInterval(interval)
   }, [])
 
   return (

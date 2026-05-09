@@ -1,9 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readFile, writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import { broadcast } from '@/lib/sse-broadcast'
-
-const DATA_FILE = '/tmp/hello-content.json'
 
 const DEFAULT = {
   code: '// Hello, world!\nconsole.log("Hello from the /hello page!");',
@@ -11,18 +6,10 @@ const DEFAULT = {
   filename: 'hello.js',
 }
 
-async function readContent() {
-  try {
-    const raw = await readFile(DATA_FILE, 'utf-8')
-    return JSON.parse(raw)
-  } catch {
-    return DEFAULT
-  }
-}
+let cached = { ...DEFAULT }
 
 export async function GET() {
-  const content = await readContent()
-  return NextResponse.json(content)
+  return NextResponse.json(cached)
 }
 
 export async function POST(req: NextRequest) {
@@ -47,15 +34,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '`code` (string) is required' }, { status: 400 })
   }
 
-  const content = {
+  cached = {
     code,
     language: typeof language === 'string' ? language : 'javascript',
     filename: typeof filename === 'string' ? filename : 'hello.js',
   }
-
-  await mkdir(path.dirname(DATA_FILE), { recursive: true })
-  await writeFile(DATA_FILE, JSON.stringify(content, null, 2), 'utf-8')
-  broadcast(content)
 
   return NextResponse.json({ ok: true })
 }
