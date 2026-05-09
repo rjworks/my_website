@@ -1,8 +1,7 @@
 import { readFile } from 'fs/promises'
-import path from 'path'
 import HelloViewer from './HelloViewer'
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'hello-content.json')
+const DATA_FILE = '/tmp/hello-content.json'
 
 const DEFAULT = {
   code: '// Hello, world!\nconsole.log("Hello from the /hello page!");',
