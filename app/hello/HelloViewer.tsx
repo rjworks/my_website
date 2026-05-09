@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface Content {
   code: string
@@ -10,6 +10,8 @@ interface Content {
 
 export default function HelloViewer({ initial }: { initial: Content }) {
   const [code, setCode] = useState(initial.code)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const preRef = useRef<HTMLPreElement>(null)
 
   useEffect(() => {
     const poll = async () => {
@@ -25,10 +27,33 @@ export default function HelloViewer({ initial }: { initial: Content }) {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    const pre = preRef.current
+    const container = containerRef.current
+    if (!pre || !container) return
+
+    let lo = 1
+    let hi = 300
+    while (lo < hi) {
+      const mid = Math.floor((lo + hi + 1) / 2)
+      pre.style.fontSize = `${mid}px`
+      if (pre.scrollWidth <= container.clientWidth && pre.scrollHeight <= container.clientHeight) {
+        lo = mid
+      } else {
+        hi = mid - 1
+      }
+    }
+    pre.style.fontSize = `${lo}px`
+  }, [code])
+
   return (
-    <div className="min-h-screen bg-[#1e1e1e] p-8">
+    <div
+      ref={containerRef}
+      className="h-screen w-screen bg-[#1e1e1e] p-4 overflow-hidden"
+    >
       <pre
-        className="text-[#e1e4e8] text-sm leading-relaxed whitespace-pre-wrap"
+        ref={preRef}
+        className="text-[#e1e4e8] leading-snug whitespace-pre-wrap"
         style={{ fontFamily: 'Consolas, "Courier New", monospace' }}
       >
         {code}
