@@ -27,16 +27,15 @@ export default function Hero() {
         >
           Software Developer &nbsp;·&nbsp;
           <a
-            href="mailto:rj.andal.cs@gmail.com"
+            href="mailto:rjandal248@gmail.com"
             style={{ fontWeight: 400, fontSize: '1rem', color: 'var(--ink-muted)', letterSpacing: 'normal' }}
           >
-            rj.andal.cs@gmail.com
+            rjandal248@gmail.com
           </a>
         </p>
 
         {/* Location */}
         <p style={{ color: 'var(--ink-muted)', fontSize: '0.9rem', marginBottom: '2rem' }}>
-          📍 Vancouver, BC &nbsp;·&nbsp; Saskatoon, SK
         </p>
 
         {/* Intro */}
@@ -51,7 +50,7 @@ export default function Hero() {
         >
           I&apos;m a Software Developer who enjoys building things that are fast, thoughtful, and
           actually useful. I&apos;ve worked across the stack, from React frontends to Python and Node.js
-          backends to AWS deployments — and I care a lot about the details.
+          backends to AWS deployments. I care a lot about the results and details.
         </p>
 
         {/* Fun fact */}
