@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 
-const tabs = [
+const sectionTabs = [
   { id: 'hero',       label: 'Home' },
   { id: 'experience', label: 'Experience' },
   { id: 'projects',   label: 'Projects' },
@@ -12,16 +13,22 @@ const tabs = [
   { id: 'contact',    label: 'Contact' },
 ]
 
+const tabs = [...sectionTabs, { id: 'blogs', label: 'Blogs' }]
+
 export default function Navbar() {
   const [active, setActive] = useState('hero')
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
+  const router = useRouter()
+  const pathname = usePathname()
+  const onHome = pathname === '/'
 
   useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
+    if (!onHome) return
     const observers: IntersectionObserver[] = []
-    tabs.forEach(({ id }) => {
+    sectionTabs.forEach(({ id }) => {
       const el = document.getElementById(id)
       if (!el) return
       const obs = new IntersectionObserver(
@@ -35,11 +42,21 @@ export default function Navbar() {
       observers.push(obs)
     })
     return () => observers.forEach(o => o.disconnect())
-  }, [])
+  }, [onHome])
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  const goTo = (id: string) => {
+    if (id === 'blogs') {
+      router.push('/blogs')
+      return
+    }
+    if (onHome) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      router.push(id === 'hero' ? '/' : `/#${id}`)
+    }
   }
+
+  const isActive = (id: string) => (pathname.startsWith('/blogs') ? id === 'blogs' : onHome && active === id)
 
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark')
 
@@ -48,24 +65,24 @@ export default function Navbar() {
       {/* ── Desktop: binder tabs anchored to paper's right edge ── */}
       <nav className="fixed top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col items-end gap-1" style={{ right: 'max(0px, calc(50% - 430px))' }}>
         {tabs.map(({ id, label }) => {
-          const isActive = active === id
+          const tabActive = isActive(id)
           return (
             <button
               key={id}
-              onClick={() => scrollTo(id)}
+              onClick={() => goTo(id)}
               style={{
                 writingMode: 'vertical-rl',
                 textOrientation: 'mixed',
                 transform: 'rotate(180deg)',
-                backgroundColor: isActive ? 'var(--accent)' : 'var(--tab-bg)',
-                color: isActive ? '#fff' : 'var(--ink-muted)',
-                borderLeft: `3px solid ${isActive ? 'var(--margin-line)' : 'var(--rule-line)'}`,
-                boxShadow: isActive ? '-2px 2px 8px var(--shadow)' : '-1px 1px 4px var(--shadow)',
+                backgroundColor: tabActive ? 'var(--accent)' : 'var(--tab-bg)',
+                color: tabActive ? '#fff' : 'var(--ink-muted)',
+                borderLeft: `3px solid ${tabActive ? 'var(--margin-line)' : 'var(--rule-line)'}`,
+                boxShadow: tabActive ? '-2px 2px 8px var(--shadow)' : '-1px 1px 4px var(--shadow)',
                 transition: 'all 0.2s ease',
                 cursor: 'pointer',
                 padding: '0.75rem 0.5rem',
                 fontSize: '0.7rem',
-                fontWeight: isActive ? 700 : 500,
+                fontWeight: tabActive ? 700 : 500,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 borderRadius: '0 4px 4px 0',
@@ -118,19 +135,19 @@ export default function Navbar() {
         </span>
         <div className="flex items-center gap-1 overflow-x-auto">
           {tabs.map(({ id, label }) => {
-            const isActive = active === id
+            const tabActive = isActive(id)
             return (
               <button
                 key={id}
-                onClick={() => scrollTo(id)}
+                onClick={() => goTo(id)}
                 style={{
                   padding: '0.2rem 0.5rem',
                   fontSize: '0.65rem',
-                  fontWeight: isActive ? 700 : 500,
+                  fontWeight: tabActive ? 700 : 500,
                   textTransform: 'uppercase',
                   letterSpacing: '0.06em',
-                  color: isActive ? 'var(--accent)' : 'var(--ink-muted)',
-                  borderBottom: isActive ? '2px solid var(--accent)' : '2px solid transparent',
+                  color: tabActive ? 'var(--accent)' : 'var(--ink-muted)',
+                  borderBottom: tabActive ? '2px solid var(--accent)' : '2px solid transparent',
                   background: 'none',
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',

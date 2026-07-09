@@ -107,6 +107,12 @@ body {
   border-bottom: 1px solid var(--rule-line);
 }
 
+/* ── Blog cards ── */
+.blog-card:hover {
+  box-shadow: 0 4px 16px var(--shadow) !important;
+  transform: translateY(-2px);
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--paper-dark); }

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { kv } from '@vercel/kv'
+
+const HELLO_KEY = 'hello-content'
 
 const DEFAULT = {
   code: '// Hello, world!\nconsole.log("Hello from the /hello page!");',
@@ -6,10 +9,9 @@ const DEFAULT = {
   filename: 'hello.js',
 }
 
-let cached = { ...DEFAULT }
-
 export async function GET() {
-  return NextResponse.json(cached)
+  const content = await kv.get(HELLO_KEY)
+  return NextResponse.json(content ?? DEFAULT)
 }
 
 export async function POST(req: NextRequest) {
@@ -34,11 +36,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '`code` (string) is required' }, { status: 400 })
   }
 
-  cached = {
+  const content = {
     code,
     language: typeof language === 'string' ? language : 'javascript',
     filename: typeof filename === 'string' ? filename : 'hello.js',
   }
 
+  await kv.set(HELLO_KEY, content)
   return NextResponse.json({ ok: true })
 }
