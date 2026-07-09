@@ -48,7 +48,7 @@ export default async function BlogPostPage({
         >
           <article className="px-8 md:px-16 py-16 md:py-24 max-w-2xl">
             <Link
-              href="/blogs"
+              href="/#blogs"
               style={{
                 fontSize: '0.8rem',
                 color: 'var(--accent)',

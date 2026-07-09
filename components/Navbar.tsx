@@ -4,16 +4,14 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 
-const sectionTabs = [
+const tabs = [
   { id: 'hero',       label: 'Home' },
   { id: 'experience', label: 'Experience' },
   { id: 'projects',   label: 'Projects' },
   { id: 'education',  label: 'Education' },
   { id: 'skills',     label: 'Skills' },
-  { id: 'contact',    label: 'Contact' },
+  { id: 'blogs',      label: 'Blogs' },
 ]
-
-const tabs = [...sectionTabs, { id: 'blogs', label: 'Blogs' }]
 
 export default function Navbar() {
   const [active, setActive] = useState('hero')
@@ -28,7 +26,7 @@ export default function Navbar() {
   useEffect(() => {
     if (!onHome) return
     const observers: IntersectionObserver[] = []
-    sectionTabs.forEach(({ id }) => {
+    tabs.forEach(({ id }) => {
       const el = document.getElementById(id)
       if (!el) return
       const obs = new IntersectionObserver(
@@ -45,10 +43,6 @@ export default function Navbar() {
   }, [onHome])
 
   const goTo = (id: string) => {
-    if (id === 'blogs') {
-      router.push('/blogs')
-      return
-    }
     if (onHome) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     } else {

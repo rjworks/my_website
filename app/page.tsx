@@ -4,7 +4,7 @@ import Experience from '@/components/Experience'
 import Projects from '@/components/Projects'
 import Education from '@/components/Education'
 import Skills from '@/components/Skills'
-import Contact from '@/components/Contact'
+import Blogs from '@/components/Blogs'
 
 export default function Home() {
   return (
@@ -30,7 +30,7 @@ export default function Home() {
           <hr style={{ border: 'none', borderTop: '1px solid var(--rule-line)', margin: '0 1rem' }} />
           <Skills />
           <hr style={{ border: 'none', borderTop: '1px solid var(--rule-line)', margin: '0 1rem' }} />
-          <Contact />
+          <Blogs />
         </main>
       </div>
     </>
